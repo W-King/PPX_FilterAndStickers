@@ -1,25 +1,21 @@
 //
 //  PPX_PhotoEditorsViewController.m
-//  PIC
+//  PPX_FilterAndStickers
 //
-//  Created by pipixia on 2016/10/20.
+//  Created by pipixia on 2016/10/26.
 //  Copyright © 2016年 pipixia. All rights reserved.
 //
 
 #import "PPX_PhotoEditorsViewController.h"
 
 //滤镜
-#import "YBFilterScrollView.h"
-#import "StickersScrollView.h"
+#import "PPXFilterScrollView.h"
+#import "PPXStickersScrollView.h"
 
 //
-#import "XTPasterStageView.h"
-#import "XTPasterView.h"
+#import "PPXPasterStageView.h"
+#import "PPXPasterView.h"
 
-//
-#define FULL_SCREEN_H [UIScreen mainScreen].bounds.size.height
-#define FULL_SCREEN_W [UIScreen mainScreen].bounds.size.width
-//
 
 #define SCREEN_HEIGHT [UIScreen mainScreen].bounds.size.height
 #define SCREEN_WIDTH [UIScreen mainScreen].bounds.size.width
@@ -33,15 +29,15 @@ const CGFloat inset_space = 10;
 static CGFloat bottomButtonH = 52;
 //
 
-@interface PPX_PhotoEditorsViewController ()<YBFilterScrollViewDelegate,StickersScrollViewDelegate>
+@interface PPX_PhotoEditorsViewController ()<PPXFilterScrollViewDelegate,PPXStickersScrollViewDelegate>
 
 
 /**装多个滤镜样式的scrollView*/
-@property (nonatomic, strong) YBFilterScrollView *filterScrollView;
+@property (nonatomic, strong) PPXFilterScrollView *filterScrollView;
 //
-@property (nonatomic, strong) StickersScrollView *stickersScrollView;
+@property (nonatomic, strong) PPXStickersScrollView *stickersScrollView;
 
-@property (strong, nonatomic) XTPasterStageView *stageView ;
+@property (strong, nonatomic) PPXPasterStageView *stageView ;
 
 
 @end
@@ -60,7 +56,7 @@ static CGFloat bottomButtonH = 52;
     [self setupUI];
     
     UIView *bottomView = [[UIView alloc]init];
-    bottomView.frame = CGRectMake(0, FULL_SCREEN_H - 52, FULL_SCREEN_W, 52);
+    bottomView.frame = CGRectMake(0, SCREEN_HEIGHT - 52, SCREEN_WIDTH, 52);
     bottomView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:bottomView];
     
@@ -96,7 +92,7 @@ static CGFloat bottomButtonH = 52;
 {
     [self setup] ;
 
-    _filterScrollView = [[YBFilterScrollView alloc]initWithFrame:CGRectMake(0, FULL_SCREEN_H - 120 - bottomButtonH, FULL_SCREEN_W, 120)];
+    _filterScrollView = [[PPXFilterScrollView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 120 - bottomButtonH, SCREEN_WIDTH, 120)];
     _filterScrollView.backgroundColor = [UIColor redColor];
     NSArray *titleArray = @[@"原图",@"LOMO",@"黑白",@"复古",@"哥特",@"瑞华",@"淡雅",@"酒红",@"青柠",@"浪漫",@"光晕",@"蓝调",@"梦幻",@"夜色"];
     _filterScrollView.titleArray = titleArray;
@@ -112,7 +108,7 @@ static CGFloat bottomButtonH = 52;
     [self.view addSubview:self.filterScrollView];
     
     
-    _stickersScrollView= [[StickersScrollView alloc]initWithFrame:CGRectMake(0, FULL_SCREEN_H - 120 - bottomButtonH, FULL_SCREEN_W, 120)];
+    _stickersScrollView= [[PPXStickersScrollView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT - 120 - bottomButtonH, SCREEN_WIDTH, 120)];
     NSArray *tArray = @[@"1",@"2",@"3",@"4",@"5"];
     _stickersScrollView.titleArray = tArray;
     _stickersScrollView.hidden = YES;
@@ -215,7 +211,7 @@ static CGFloat bottomButtonH = 52;
         }
     }
     
-    _stageView = [[XTPasterStageView alloc] initWithFrame:CGRectMake(X, Y, W, H)] ;
+    _stageView = [[PPXPasterStageView alloc] initWithFrame:CGRectMake(X, Y, W, H)] ;
     
 //    _stageView = [[XTPasterStageView alloc] initWithFrame:CGRectMake(0, 64, 300, 300)] ;
     _stageView.clipsToBounds = YES;
@@ -224,7 +220,7 @@ static CGFloat bottomButtonH = 52;
     [self.view addSubview:_stageView] ;
 }
 
-#pragma mark - YBFilterScrollViewDelegate
+#pragma mark - PPXFilterScrollViewDelegate
 - (void)filterImage:(UIImage *)editedImage
 {
     _stageView.originImage = editedImage;

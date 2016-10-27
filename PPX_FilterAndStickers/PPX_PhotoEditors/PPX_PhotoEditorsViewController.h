@@ -1,8 +1,8 @@
 //
 //  PPX_PhotoEditorsViewController.h
-//  PIC
+//  PPX_FilterAndStickers
 //
-//  Created by pipixia on 2016/10/20.
+//  Created by pipixia on 2016/10/26.
 //  Copyright © 2016年 pipixia. All rights reserved.
 //
 

@@ -1,9 +1,9 @@
 //
 //  RootViewController.h
-//  pictureProcess
+//  BigSport
 //
-//  Created by Ibokan on 12-9-7.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by pipixia on 16/10/21.
+//  Copyright © 2016年 iCHSY. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

@@ -1,12 +1,14 @@
 //
 //  RootViewController.h
-//  pictureProcess
+//  BigSport
 //
-//  Created by Ibokan on 12-9-7.
-//  Copyright (c) 2012年 __MyCompanyName__. All rights reserved.
+//  Created by pipixia on 16/10/21.
+//  Copyright © 2016年 iCHSY. All rights reserved.
 //
 
 #import "ImageUtil.h"
+
+void * bitmap;
 
 @implementation ImageUtil
 
@@ -28,12 +30,13 @@ static CGContextRef CreateRGBABitmapContext (CGImageRef inImage)// 返回一个�
 	
 	bitmapData = malloc(bitmapByteCount); //分配足够容纳图片字节数的内存空间
     
+    bitmap = bitmapData;
+    
 	context = CGBitmapContextCreate (bitmapData, pixelsWide, pixelsHigh, 8, bitmapBytesPerRow, colorSpace, kCGImageAlphaPremultipliedLast);
     //创建CoreGraphic的图形上下文，该上下文描述了bitmaData指向的内存空间需要绘制的图像的一些绘制参数
     
-	CGColorSpaceRelease( colorSpace ); 
+	CGColorSpaceRelease( colorSpace );
     //Core Foundation中通过含有Create、Alloc的方法名字创建的指针，需要使用CFRelease()函数释放
-    
 	return context;
 }
 
@@ -48,8 +51,7 @@ static unsigned char *RequestImagePixelData(UIImage *inImage)
 	CGRect rect = {{0,0},{size.width, size.height}};
     
 	CGContextDrawImage(cgctx, rect, img); //将目标图像绘制到指定的上下文，实际为上下文内的bitmapData。
-	unsigned char *data = CGBitmapContextGetData (cgctx); 
-    
+	unsigned char *data = CGBitmapContextGetData (cgctx);
 	CGContextRelease(cgctx);//释放上面的函数创建的上下文
 	return data;
 }
@@ -102,15 +104,15 @@ static void changeRGBA(int *red,int *green,int *blue,int *alpha, const float* f)
 
 + (UIImage*)imageWithImage:(UIImage*)inImage withColorMatrix:(const float*) f
 {
-	unsigned char *imgPixel = RequestImagePixelData(inImage);
 	CGImageRef inImageRef = [inImage CGImage];
 	size_t w = CGImageGetWidth(inImageRef);
 	size_t h = CGImageGetHeight(inImageRef);
+    
+    unsigned char *imgPixel = RequestImagePixelData(inImage);
 	
 	int wOff = 0;
 	int pixOff = 0;
 	
-    
 	for(GLuint y = 0;y< h;y++)//双层循环按照长宽的像素个数迭代每个像素点
 	{
 		pixOff = wOff;
@@ -129,7 +131,6 @@ static void changeRGBA(int *red,int *green,int *blue,int *alpha, const float* f)
 			imgPixel[pixOff+2] = blue;
             imgPixel[pixOff+3] = alpha;
             
-           
 			pixOff += 4; //将数组的索引指向下四个元素
 		}
         
@@ -151,11 +152,12 @@ static void changeRGBA(int *red,int *green,int *blue,int *alpha, const float* f)
 	CGImageRef imageRef = CGImageCreate(w, h, bitsPerComponent, bitsPerPixel, bytesPerRow,colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);//创建要输出的图像
 	
 	UIImage *myImage = [UIImage imageWithCGImage:imageRef];
-	
-	CFRelease(imageRef);
+    NSData *data = UIImageJPEGRepresentation(myImage, 1.0);
+    CGImageRelease(imageRef);
 	CGColorSpaceRelease(colorSpaceRef);
 	CGDataProviderRelease(provider);
-	return myImage;
+    free(bitmap);
+	return [UIImage imageWithData:data];
 }
 
 @end
